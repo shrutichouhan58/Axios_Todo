@@ -22,7 +22,7 @@ const Crud = () => {
         setdata(response.data);
       })
       .catch((error) => {
-        console.error("Fetching error: ", error);
+        alert('Fetching error: ',error)
       });
   }, []);
 
@@ -36,7 +36,7 @@ const Crud = () => {
         setstate({ username: "", first_name: "", last_name: "", email: "", password: "" });
       })
       .catch((error) => {
-        console.error("Posting Error: ", error);
+        alert("Posting Error: ", error)
       });
   };
 
@@ -49,7 +49,7 @@ const Crud = () => {
         setdata(updatedData);
       })
       .catch((error) => {
-        console.error("Deleting Error: ", error);
+        alert("Deleting Error: ", error)
       });
   }
 
@@ -59,7 +59,6 @@ const Crud = () => {
   };
 
   const handleUpdate = () => {
-    console.log(EditItem.id)
     axios
       .put(`http://127.0.0.1:8000/users/${EditItem.id}/`, EditItem)
       .then((response) => {
@@ -70,7 +69,7 @@ const Crud = () => {
         setEdit(null);
       })
       .catch((error) => {
-        console.error("Updating Error: ", error);
+        alert("Updating Error: ", error)
       });
   };
 
