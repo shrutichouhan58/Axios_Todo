@@ -17,7 +17,7 @@ const TodoApp = () => {
   useEffect(() => {
     // Fetch data from the api.
     axios
-      .get("http://localhost:8000/user")
+      .get("http://localhost:3000/user")
       .then((response) => {
         setdata(response.data);
       })
@@ -30,7 +30,7 @@ const TodoApp = () => {
   // Post data in the Api.
   const Post = () => {
     axios
-      .post("http://localhost:8000/user", state)
+      .post("http://localhost:3000/user", state)
       .then((response) => {
         setdata([...state, response.data]);
         setstate(initial_data);
@@ -43,7 +43,7 @@ const TodoApp = () => {
   // Delete data from the api
   const Delete = (id) => {
     axios
-      .delete(`http://localhost:8000/user/${id}/`)
+      .delete(`http://localhost:3000/user/${id}/`)
       .then(() => {
         const updatedData = data.filter((item) => item.id !== id);
         setdata(updatedData);
@@ -60,7 +60,7 @@ const TodoApp = () => {
 
   const handleUpdate = () => {
     axios
-      .put(`http://localhost:8000/user/${EditItem.id}/`, EditItem)
+      .put(`http://localhost:3000/user/${EditItem.id}/`, EditItem)
       .then((response) => {
         const updatedData = data.map((Item) =>
           Item.id === EditItem.id ? response.data : Item
