@@ -2,27 +2,27 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../App.css';
 
-const Crud = () => {
-  const [state, setstate] = useState({
+const TodoApp = () => {
+  let initial_data = {
     username: "",
     first_name: "",
     last_name: "",
     email: "",
     password: ""
-  });
+  }
+  const [state, setstate] = useState(initial_data);
   const [data, setdata] = useState([]);
   const [EditItem, setEdit] = useState(null)
-
 
   useEffect(() => {
     // Fetch data from the api.
     axios
-      .get("http://127.0.0.1:8000/users/")
+      .get("http://localhost:8000/user")
       .then((response) => {
         setdata(response.data);
       })
       .catch((error) => {
-        alert('Fetching error: ',error)
+        console.error('Fetching error: ',error)
       });
   }, []);
 
@@ -30,26 +30,26 @@ const Crud = () => {
   // Post data in the Api.
   const Post = () => {
     axios
-      .post("http://127.0.0.1:8000/users/", state)
+      .post("http://localhost:8000/user", state)
       .then((response) => {
         setdata([...state, response.data]);
-        setstate({ username: "", first_name: "", last_name: "", email: "", password: "" });
+        setstate(initial_data);
       })
       .catch((error) => {
-        alert("Posting Error: ", error)
+        console.error("Posting Error: ", error)
       });
   };
 
   // Delete data from the api
   const Delete = (id) => {
     axios
-      .delete(`http://127.0.0.1:8000/users/${id}/`)
+      .delete(`http://localhost:8000/user/${id}/`)
       .then(() => {
         const updatedData = data.filter((item) => item.id !== id);
         setdata(updatedData);
       })
       .catch((error) => {
-        alert("Deleting Error: ", error)
+        console.error("Deleting Error: ", error)
       });
   }
 
@@ -60,7 +60,7 @@ const Crud = () => {
 
   const handleUpdate = () => {
     axios
-      .put(`http://127.0.0.1:8000/users/${EditItem.id}/`, EditItem)
+      .put(`http://localhost:8000/user/${EditItem.id}/`, EditItem)
       .then((response) => {
         const updatedData = data.map((Item) =>
           Item.id === EditItem.id ? response.data : Item
@@ -69,14 +69,13 @@ const Crud = () => {
         setEdit(null);
       })
       .catch((error) => {
-        alert("Updating Error: ", error)
+        console.error("Updating Error: ", error)
       });
   };
 
   return (
     <>
       {/* Edit Todo */}
-
       <div class='main'>
         <div class="center">
           {EditItem ? (
@@ -111,6 +110,7 @@ const Crud = () => {
               </div>
             </div>
           ) :
+          (
             <div>
               <div className="inputbox">
                 Username <input type='text' value={state.username} onChange={(e) => setstate({ ...state, username: e.target.value })}/><br />
@@ -142,25 +142,26 @@ const Crud = () => {
               <div className="inputbox">
                 <button onClick={Post}>Post Data</button>
               </div>
-            </div>}
+            </div>
+            )}
         </div>
       </div>
       
       {/* show data from the api */}
       <div class="center">
         <table>
-          {data && data.map((data, key) => {
+          {data && data.map((data, uniqueKey) => {
             return (
               <>
-              <tr key={key}>
-                <td>{key}</td>
+              <tr key={uniqueKey}>
+                <td>{uniqueKey}</td>
                 <td>{data.username}</td>
                 <td>{data.firt_name}</td>
                 <td>{data.last_name}</td>
                 <td>{data.email}</td>
                 <td>{data.password}</td>
-                <td><button onClick={() => Delete(key)}>Delete</button></td>
-                <td><button onClick={() => Update(key)}>Update</button></td>
+                <td><button onClick={() => Delete(uniqueKey)}>Delete</button></td>
+                <td><button onClick={() => Update(uniqueKey)}>Update</button></td>
               </tr>
               </>
             )
@@ -170,4 +171,4 @@ const Crud = () => {
     </>
   );
 }
-export default Crud;
+export default TodoApp;

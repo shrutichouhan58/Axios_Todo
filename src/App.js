@@ -1,9 +1,9 @@
 import React from 'react'
-import Crud from './components/Crud'
+import TodoApp from './components/TodoApp'
 
 const  App = () => {
   return (
-    <Crud/>
+    <TodoApp/>
   )
 }
 
